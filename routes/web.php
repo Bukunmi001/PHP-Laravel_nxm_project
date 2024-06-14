@@ -11,3 +11,4 @@ Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show'
 Route::get('/top-distributors', [DistributorController::class, 'topDistributors'])->name('distributors.top');
 
 
+

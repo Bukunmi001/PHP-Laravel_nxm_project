@@ -20,7 +20,6 @@
     @if ($orders->isEmpty())
         <p>No records found.</p>
     @else
-
     <table>
         <thead>
             <tr>
@@ -53,7 +52,7 @@
     </table>
 
     <div class="pagination">
-        {{ $orders->appends(request()->except('page'))->links() }}
+        {{ $orders->links('vendor.pagination.custom') }}
     </div>
     @endif
 </body>
