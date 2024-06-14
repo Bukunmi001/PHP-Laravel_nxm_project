@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -17,7 +17,7 @@ class CommissionController extends Controller
 
     public function show($id)
     {
-        $order = Order::findOrFail($id); // Adjust this as per your application logic
+        $order = Order::findOrFail($id); 
         return view('orders.show', compact('order'));
     }
 
@@ -41,13 +41,13 @@ class CommissionController extends Controller
             $query->where('order_date', '<=', $request->order_date_to);
         }
 
-        $orders = $query->paginate(25); // Paginate with 25 records per page
+        $orders = $query->paginate(25);
 
-        // Calculate commission and set percentage to 5%
         $orders->transform(function ($order) {
-            $this->commissionService->calculateCommission($order);
-            $order->percentage = 5; // Set percentage to 5%
-            $order->formatted_commission = number_format($order->commission, 2); // Format commission to 2 decimal places
+            $commissionData = $this->commissionService->calculateCommission($order);
+            $order->percentage = $commissionData['percentage'];
+            $order->commission = $commissionData['commission'];
+            $order->formatted_commission = number_format($commissionData['commission'], 2);
             return $order;
         });
 

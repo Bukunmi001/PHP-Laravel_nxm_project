@@ -41,7 +41,7 @@
                     <td>{{ $order->invoice_number }}</td>
                     <td>{{ $order->purchaser ? $order->purchaser->id : 'N/A' }}</td>
                     <td>{{ $order->purchaser->referrer ? $order->purchaser->referrer->full_name : 'N/A' }}</td>
-                    <td>{{ $order->purchaser->referrer ? $order->purchaser->referrer->referredDistributors->where('categories.name', 'Distributor')->count() : 0 }}</td>
+                    <td>{{ $order->purchaser->referrer ? $order->purchaser->referrer->referredDistributors->count() : 0 }}</td>
                     <td>{{ $order->order_date }}</td>
                     <td>{{ $order->percentage }}%</td>
                     <td>${{ number_format($order->items->sum(function ($item) { return $item->product ? $item->product->price * $item->quantity : 0; }), 2) }}</td>

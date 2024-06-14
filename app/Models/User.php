@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+
 
 class User extends Authenticatable
 {
@@ -62,7 +64,9 @@ class User extends Authenticatable
      */
     public function referredDistributors()
     {
-        return $this->hasMany(User::class, 'referred_by');
+        return $this->referredUsers()->whereHas('categories', function ($query) {
+            $query->where('name', 'Distributor');
+        });
     }
 
     /**
@@ -80,6 +84,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'referred_by');
     }
+     // Relationship to get the users referred by this user
+     public function referredUsers()
+     {
+         return $this->hasMany(User::class, 'referred_by');
+     }
 
     /**
      * Get the full name of the user.

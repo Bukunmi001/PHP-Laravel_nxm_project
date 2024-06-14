@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Order;
@@ -12,7 +11,7 @@ class CommissionService
 
         if ($purchaser && $purchaser->referrer && $purchaser->referrer->categories->contains('name', 'Distributor')) {
             $distributor = $purchaser->referrer;
-            $referredDistributorsCount = $distributor->referredDistributors->where('categories.name', 'Distributor')->count();
+            $referredDistributorsCount = $distributor->referredDistributors->count();
 
             $commissionPercentage = $this->getCommissionPercentage($referredDistributorsCount);
 
@@ -22,6 +21,7 @@ class CommissionService
 
             $commission = $orderTotal * ($commissionPercentage / 100);
 
+            $order->commission = $commission;
             return [
                 'invoice' => $order->invoice_number,
                 'purchaser' => $order->purchaser_id ?: 'N/A',
@@ -34,6 +34,7 @@ class CommissionService
             ];
         }
 
+        $order->commission = 5;
         return [
             'invoice' => $order->invoice_number,
             'purchaser' => $order->purchaser_id ?: 'N/A',
@@ -42,7 +43,7 @@ class CommissionService
             'order_date' => $order->order_date,
             'percentage' => 0,
             'order_total' => 0,
-            'commission' => 0,
+            'commission' => 5,
         ];
     }
 
